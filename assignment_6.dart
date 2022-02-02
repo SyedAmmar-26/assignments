@@ -24,7 +24,7 @@ void main() {
 
 void menu(dynamic persons) {
   int flag = 0;
-  int choice;
+  String choice;
   int count = 0;
   while (flag != 1) {
     print(Process.runSync("cls", [], runInShell: true).stdout);
@@ -33,9 +33,9 @@ void menu(dynamic persons) {
     print("3) Delete Contact");
     print("4) List all Contacts");
     print("5) Exit");
-    choice = int.parse(stdin.readLineSync()!);
+    choice = stdin.readLineSync()!;
     switch (choice) {
-      case 1:
+      case '1':
         String n = "", p = "", e = "", d = "";
         print("\nContact Name = ");
         n = stdin.readLineSync()!;
@@ -66,18 +66,18 @@ void menu(dynamic persons) {
           count++;
         }
         break;
-      case 2:
+      case '2':
         String n = "", p = "", e = "", d = "";
-        print("\nContact Name = ");
+        print("\nEnter Contact Name = ");
         n = stdin.readLineSync()!;
-        print("\nPhone Number = ");
+        print("\nEnter Phone Number = ");
         p = stdin.readLineSync()!;
         if (exist(persons, n, p) == true) {
           for (Contact pr in persons) {
-            if (pr.name == n && pr.pno == p) {
-              print("\nContact Name = ");
+            if (pr.name.toLowerCase() == n.toLowerCase() && pr.pno == p) {
+              print("\nEnter New Contact Name = ");
               n = stdin.readLineSync()!;
-              print("\nPhone Number = ");
+              print("\nEnter New Phone Number = ");
               p = stdin.readLineSync()!;
               int f = 0;
               while (f != 1) {
@@ -85,9 +85,9 @@ void menu(dynamic persons) {
                     "Do You Want to give email and date of birth?\nPress Y for yes and N for No");
                 String ch = stdin.readLineSync()!;
                 if (ch == 'Y' || ch == 'y') {
-                  print("\nEmail Address = ");
+                  print("\nEnter New Email Address = ");
                   e = stdin.readLineSync()!;
-                  print("\nDate of Birth = ");
+                  print("\nEnter New Date of Birth = ");
                   d = stdin.readLineSync()!;
                   pr.addContact(n, p, email: e, dob: d);
                   f = 1;
@@ -104,7 +104,7 @@ void menu(dynamic persons) {
           }
         }
         break;
-      case 3:
+      case '3':
         if (count != 0) {
           print(count);
           String n = "", p = "";
@@ -115,17 +115,21 @@ void menu(dynamic persons) {
           if (exist(persons, n, p) == true) {
             persons.removeWhere((item) =>
                 item.name.toLowerCase() == n.toLowerCase() && item.pno == p);
+            count--;
           }
         } else {
           print("No Contacts in List");
         }
         break;
-      case 4:
+      case '4':
         listFunc(persons);
         break;
-      case 5:
+      case '5':
         flag = 1;
         break;
+      default:
+        print("Invalid Input Detected!\nEnter To Continue");
+        stdin.readLineSync();
     }
   }
 }
