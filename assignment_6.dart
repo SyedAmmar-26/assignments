@@ -55,6 +55,7 @@ void menu(dynamic persons) {
             persons[count].addContact(n, p, email: e, dob: d);
             f = 1;
           } else if (ch == 'N' || ch == 'n') {
+            persons.add(Contact());
             persons[count].addContact(n, p);
             f = 1;
           } else {
@@ -75,9 +76,9 @@ void menu(dynamic persons) {
           for (Contact pr in persons) {
             if (pr.name == n && pr.pno == p) {
               print("\nContact Name = ");
-              pr.name = stdin.readLineSync()!;
+              n = stdin.readLineSync()!;
               print("\nPhone Number = ");
-              pr.pno = stdin.readLineSync()!;
+              p = stdin.readLineSync()!;
               int f = 0;
               while (f != 1) {
                 print(
@@ -85,14 +86,13 @@ void menu(dynamic persons) {
                 String ch = stdin.readLineSync()!;
                 if (ch == 'Y' || ch == 'y') {
                   print("\nEmail Address = ");
-                  pr.email = stdin.readLineSync()!;
+                  e = stdin.readLineSync()!;
                   print("\nDate of Birth = ");
-                  pr.dob = stdin.readLineSync()!;
-                  persons.add(Contact());
-                  persons[count].addContact(n, p, email: e, dob: d);
+                  d = stdin.readLineSync()!;
+                  pr.addContact(n, p, email: e, dob: d);
                   f = 1;
                 } else if (ch == 'N' || ch == 'n') {
-                  pr.addContact(n, p);
+                  pr.addContact(n, p, email: pr.email, dob: pr.dob);
                   f = 1;
                 } else {
                   print("\nWrong Input\nEnter to Continue");
@@ -113,7 +113,8 @@ void menu(dynamic persons) {
           print("\nPhone Number = ");
           p = stdin.readLineSync()!;
           if (exist(persons, n, p) == true) {
-            persons.removeWhere((item) => item.name == n && item.pno == p);
+            persons.removeWhere((item) =>
+                item.name.toLowerCase() == n.toLowerCase() && item.pno == p);
           }
         } else {
           print("No Contacts in List");
@@ -136,8 +137,8 @@ void listFunc(dynamic list) {
 }
 
 bool exist(dynamic list, String name, String pno) {
-  for (dynamic c in list) {
-    if (c.contact == name && c.pno == pno) {
+  for (Contact c in list) {
+    if (c.name.toLowerCase() == name.toLowerCase() && c.pno == pno) {
       return true;
     }
   }
